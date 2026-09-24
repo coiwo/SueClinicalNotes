@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,readFile,writeFile,stat} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {randomBytes,createHash} from 'node:crypto';
+import {configured,setPassword,login,logout,validSession,IDLE_MS} from '../src/server/access-store.ts';
+test('password setup, sessions, throttling and expiry are enforced',async()=>{
+ process.env.SUE_AUTH_DIR=await mkdtemp(path.join(tmpdir(),'sue-access-unit-'));
+ const password=randomBytes(24).toString('hex');
+ assert.equal(await configured(),false);
+ await assert.rejects(setPassword('short'),/password_length/);
+ await setPassword(password);
+ assert.equal(await configured(),true);
+ await assert.rejects(setPassword(password),/already_configured/);
+ const file=path.join(process.env.SUE_AUTH_DIR,'access.json');
+ const raw=await readFile(file,'utf8');assert.ok(!raw.includes(password));assert.equal((await stat(file)).mode&0o777,0o600);
+ const token=await login(password);assert.equal(await validSession(token),true);assert.equal(await validSession('forged'),false);
+ assert.ok(!(await readFile(file,'utf8')).includes(token));
+ await logout(token);assert.equal(await validSession(token),false);
+ for(let i=0;i<4;i++)await assert.rejects(login('incorrect'),/incorrect/);
+ await assert.rejects(login('incorrect'),/locked/);await assert.rejects(login(password),/locked/);
+ const state=JSON.parse(await readFile(file,'utf8'));state.blockedUntil=Date.now()-1;await writeFile(file,JSON.stringify(state));
+ const next=await login(password);const key=createHash('sha256').update(next).digest('hex');
+ const stale=JSON.parse(await readFile(file,'utf8'));stale.sessions[key].seen=Date.now()-IDLE_MS-1;await writeFile(file,JSON.stringify(stale));assert.equal(await validSession(next),false);
+});
