@@ -1,5 +1,7 @@
 "use client";
 import SessionGuard from "./session-guard";
+import LogoutButton from "./logout-button";
+import Link from "next/link";
 import {useState} from "react";
 type Visit={id:string;date:string;pain:number|null;note:string;version:number;status:string};
 type Patient={id:string;identifier:string;payer:string;area:string;count:number;visits:Visit[]};
@@ -24,7 +26,7 @@ export default function Workspace({patients,sampleTables}:{patients:Patient[];sa
  const name=(p:Patient)=>p.identifier==="DEMO-SAMPLE-001"?"示例病人 · Word 样本":`测试病人 ${p.identifier.slice(-3)}`;
  async function copy(){if(!visit)return;try{await navigator.clipboard.writeText(`DRAFT — FOR REVIEW ONLY\n${visit.note}`);setFeedback("英文草稿已复制");}catch{setFeedback("复制未成功，请切换原文视图后选中文字复制。");}}
  return <div className="app"><SessionGuard/>
-  <header className="topbar"><a className="brand" href="/"><span className="monogram">S</span><span><strong>SUE</strong><small>CLINICAL NOTES</small></span></a><div className="top-right"><span className="local-dot"/>本机演示 <span className="top-divider"/> DEMO WORKSPACE <button className="logout-button" onClick={async()=>{try{const r=await fetch("/api/access/logout",{method:"POST"});if(!r.ok)throw new Error();window.location.replace("/login");}catch{setFeedback("退出未成功，请重试。");}}}>退出登录</button></div></header>
+  <header className="topbar"><Link className="brand" href="/"><span className="monogram">S</span><span><strong>SUE</strong><small>CLINICAL NOTES</small></span></Link><nav className="main-nav"><Link href="/">工作台</Link><Link href="/patients">病人档案</Link><Link href="/patients/new">新增病人</Link><Link href="/appointments">预约</Link><Link href="/payers">保险参考</Link></nav><LogoutButton/></header>
   <div className="demo-banner">使用虚构病人编号与已去身份的样本 · 密码保护已启用 · 当前仍为示例资料预览</div>
   <div className="app-body"><aside className="patient-panel"><div className="panel-title"><div><p className="eyebrow">YOUR WORKSPACE</p><h1>病人档案</h1></div><span className="count">{patients.length}</span></div><label className="search"><span>搜索病人 / Search</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="编号、部位或保险公司"/></label><div className="patient-list">{visible.map(p=><button key={p.id} className={`patient-item ${p.id===selected?"selected":""}`} onClick={()=>{setSelected(p.id);setVisitId("");setFeedback("");}} aria-pressed={p.id===selected}><span className="avatar">{p.identifier==="DEMO-SAMPLE-001"?"S":p.identifier.slice(-2)}</span><span className="patient-item-text"><strong>{name(p)}</strong><small>{p.identifier}</small><span>{p.area} · {p.count} 次诊疗</span></span><span className="chevron">›</span></button>)}{!visible.length&&<p className="empty">没有找到匹配的测试病人。</p>}</div><div className="sidebar-foot"><span className="small-label">当前阶段</span><strong>病历阅读体验预览</strong><p>Square 预约和病历编辑将在后续接入。</p></div></aside>
   <main className="workspace">{patient&&visit?<><div className="breadcrumb">Patients <span>/</span> {patient.identifier}</div><section className="patient-heading"><div><p className="eyebrow">PATIENT RECORD</p><h2>{name(patient)}</h2><p>病历集中在这里，每次诊疗单独保存。</p></div><span className="pill">{isSample?"去身份样本":"虚构测试资料"}</span></section>

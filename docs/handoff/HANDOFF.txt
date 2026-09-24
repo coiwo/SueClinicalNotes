@@ -1,0 +1,233 @@
+SUE CLINICAL NOTES — HANDOFF
+=============================
+
+A local, password-protected app for an acupuncture practitioner (Sue) to write,
+revise, and export clinical notes. All data stays on Sue's Mac — nothing is sent
+to any external service.
+
+
+------------------------------------------------------------------------
+GET THE PROJECT FROM GITHUB
+------------------------------------------------------------------------
+
+Repository: https://github.com/coiwo/SueClinicalNotes
+
+
+FIRST TIME — Clone the repo
+----------------------------
+
+    git clone https://github.com/coiwo/SueClinicalNotes.git
+    cd SueClinicalNotes
+    git branch                  (should show: main)
+
+
+GET THE LATEST CHANGES — after first clone
+------------------------------------------
+
+    git checkout main
+    git pull
+
+
+BASIC GIT COMMANDS YOU'LL NEED
+--------------------------------
+
+    git status                              See what files have changed
+    git log --oneline                       See commit history
+    git checkout <branch-name>              Switch to a branch
+    git checkout -b feature/your-name      Create your own branch
+    git add .                               Stage all changes
+    git commit -m "describe what changed"  Save a commit
+    git push origin feature/your-name      Push your branch to GitHub
+
+Tip: Always work on your own branch (not main) so your changes don't
+conflict with others. When you're happy with your work, open a pull
+request on GitHub to merge it in.
+
+
+------------------------------------------------------------------------
+GET IT RUNNING
+------------------------------------------------------------------------
+
+Prerequisites: Node.js 18+, npm
+
+    1.  npm ci                           Install dependencies
+    2.  npx prisma migrate deploy        Apply database migrations
+    3.  npm run db:seed                  Seed fictional test data (recommended)
+    4.  npm run dev                      Start the dev server
+
+Then open:  http://localhost:3000/login
+
+First login: You'll be prompted to set a password (12–128 characters).
+Do this once; after that, just log in with that password.
+To reset it: delete storage/private/access.json and restart.
+
+
+------------------------------------------------------------------------
+ACCESS VIA NGROK
+------------------------------------------------------------------------
+
+The app is already configured to allow login over the ngrok tunnel.
+
+URL: https://punisher-swampland-jovial.ngrok-free.dev/login
+
+The APP_ORIGIN variable in .env is set to that URL. If the ngrok URL
+ever changes, update that line in .env and restart the app.
+
+Note: ngrok is for temporary testing only. Don't leave real patient data
+running on a public tunnel long-term.
+
+
+------------------------------------------------------------------------
+WHAT'S WORKING
+------------------------------------------------------------------------
+
+    [DONE]  Login / logout / session timeout
+    [DONE]  Password setup + lockout (5 bad attempts -> 15 min block)
+    [DONE]  Patient list — search, create, archive
+    [DONE]  Clinical note creation (new patient + follow-up)
+    [DONE]  Draft editing (each edit saves a new version; old ones kept)
+    [DONE]  Finalize a note (locks it permanently)
+    [DONE]  PDF export of full patient note history
+    [DONE]  Pain score trend display across visits
+    [DONE]  Fictional appointment list (Square-style demo data)
+    [DONE]  Link/unlink demo appointments to patients
+    [DONE]  Payer reference pages (Aetna, Cigna, BCBS, UHC...) — pages exist
+    [DONE]  Database integrity safeguards (SQLite triggers)
+
+
+------------------------------------------------------------------------
+WHAT'S STILL PENDING
+------------------------------------------------------------------------
+
+CPT CODES
+  The form has CPT code fields but no picker. Sue needs to confirm which
+  codes her clinic uses before these can be filled in automatically.
+
+PAYER RULES
+  The payer reference pages exist but are empty — placeholders only.
+  Next step: attach the actual policy documents and build rule cards
+  (visit frequency limits, documentation requirements, etc.).
+  No note validation against payer rules yet.
+
+APPOINTMENT INTEGRATION
+  The appointment list shows three fictional Square-style entries for
+  demo purposes. No real Square API connection. No automatic encounter
+  creation from booked appointments.
+
+HISTORICAL NOTE IMPORT
+  A script stub exists (import-demo.mjs) but the import pipeline for
+  Sue's existing Word/PDF notes hasn't been built yet (Phase 7).
+
+BACKUPS
+  No automated backup configured yet. The database is a single file at
+  ./db.sqlite — copy that file to back up everything.
+
+PRODUCTION HOSTING
+  The app runs locally or over ngrok for now. Docker packaging and remote
+  hosting (Phase 6) haven't been set up yet.
+
+
+------------------------------------------------------------------------
+KEY WORKFLOWS TO TRY
+------------------------------------------------------------------------
+
+CREATE A NEW PATIENT
+  1. Click "新增病人" in the top nav (or go to /patients/new)
+  2. Fill in patient ID, payer (insurance), treatment area, visit date,
+     and pain score (0–10)
+  3. Fill in clinical details: ROM notes, patient report, objective
+     findings, assessment, plan
+  4. Click "保存病人和草稿 / Save patient and draft"
+  5. You'll land on the patient's detail page with the saved draft
+
+ADD A FOLLOW-UP VISIT
+  1. Open a patient's detail page (from 病人档案 -> pick a patient)
+  2. Click "新增复诊 / New visit"
+  3. Fill in the new visit date, pain score, and what changed
+  4. Save — a new draft is created; the previous version stays visible
+
+EDIT A DRAFT NOTE
+  1. On a patient's detail page, find a note with status "草稿 Draft"
+  2. Click "Edit draft" — the form opens pre-filled
+  3. Save — a new version is created (v2, v3...); prior versions stay
+
+FINALIZE A NOTE
+  1. On a patient's detail page, open the draft you want to lock
+  2. Click "Review and finalize"
+  3. Status changes to "定稿 Final" — permanently locked
+
+PRINT / EXPORT FULL NOTE HISTORY
+  1. Open any patient's detail page
+  2. Click "Export full history as PDF" (or the print button)
+  3. Browser downloads a PDF with all notes for that patient
+
+SEARCH PATIENTS
+  Use the search bar on the main workspace (/) or 病人档案.
+  Search by patient ID, treatment area, or payer name.
+
+
+------------------------------------------------------------------------
+PROJECT STRUCTURE
+------------------------------------------------------------------------
+
+    src/
+      app/
+        api/access/[action]/   login, logout, session check endpoints
+        actions.ts             all server mutations (create patient, save note)
+        page.tsx               main workspace page
+        login/                 login and password-setup pages
+      server/
+        access-store.ts        password hashing, session tokens, lockout
+        access.ts              session cookie helpers
+      components/              UI: patient cards, note editor, appointments
+
+    prisma/
+      schema.prisma            data model
+      migrations/              SQL migrations (include hand-written triggers)
+      seed.ts                  seeds 4 fictional patients, 12 encounters
+
+    storage/private/           access.json (gitignored; contains hashed password)
+    db.sqlite                  the database (gitignored)
+    .env                       env vars, including APP_ORIGIN for ngrok
+
+
+------------------------------------------------------------------------
+USEFUL COMMANDS
+------------------------------------------------------------------------
+
+    npm run dev              Start dev server (localhost:3000)
+    npm run typecheck        TypeScript check
+    npm run db:verify        Run database integrity checks
+    npm run test:access      Unit tests for auth logic
+    npm run db:seed          Re-seed fictional test data
+    npm run db:studio        Open Prisma Studio to browse the DB
+
+IMPORTANT: Always use "npx prisma migrate deploy" to apply migrations —
+never "prisma db push". The migrations contain hand-written triggers
+that db push would silently drop.
+
+
+------------------------------------------------------------------------
+KEY GOTCHAS
+------------------------------------------------------------------------
+
+Password reset:
+  Delete storage/private/access.json, restart the server, then visit
+  /login to set a new password.
+
+Editing a finalized note is blocked by design:
+  Use the addendum flow (not yet fully wired in the UI) or re-seed
+  to get fresh demo data.
+
+Demo data only:
+  The seed creates fictional patients (DEMO-ONLY-001 through 004).
+  All notes are marked "FICTIONAL TEST DATA."
+
+Dependency audit:
+  There are currently 2 critical and 4 high severity issues in
+  transitive dependencies. Fine for local testing; must be resolved
+  before any deployment with real patient data.
+
+NextAuth scaffold:
+  User/Session/Account tables are in the schema but not used — the app
+  has its own custom auth system. Ignore those tables.
