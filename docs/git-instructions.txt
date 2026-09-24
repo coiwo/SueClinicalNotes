@@ -1,0 +1,98 @@
+GIT INSTRUCTIONS
+
+Run these commands in a terminal, one line at a time.
+Replace REPOSITORY_URL with your repository's clone URL.
+These examples use master as the main branch. If your repository uses main,
+replace master with main in the commands below.
+
+1. Clone the repository (first time only)
+
+git clone REPOSITORY_URL SueClinicalNotes
+cd SueClinicalNotes
+
+For future sessions, open a terminal in the existing SueClinicalNotes folder.
+You do not need to clone it again.
+
+2. Pull the latest changes from master
+
+Before switching branches, commit your current work or stash it.
+
+git checkout master
+git pull --ff-only origin master
+
+3. Create a new feature branch
+
+Start from the updated master branch, then run:
+
+git checkout -b feature/sue-1
+
+This creates feature/sue-1 and switches to it. Use a new name, such as
+feature/sue-2, for the next task.
+To switch to an existing local branch, omit -b:
+
+git checkout feature/sue-1
+
+4. Save and push your changes to the feature branch
+
+After editing your files, review your changes:
+
+git status
+git diff
+
+Stage, review, commit, and push:
+
+git add .
+git diff --cached
+git commit -m "your notes"
+git push origin feature/sue-1
+
+Replace "your notes" with a short description of what you changed.
+Run git add . from the repository root to stage all changes, including
+deletions. Check the staged changes before committing to make sure they
+contain only the files you intend to share.
+Repeat these steps whenever you have more changes to push.
+
+5. Pull changes from the remote feature branch
+
+With your current work committed or stashed, run:
+
+git checkout feature/sue-1
+git pull --ff-only origin feature/sue-1
+
+This downloads updates that someone else pushed to the same feature branch.
+It does not bring master changes into your feature branch.
+If --ff-only reports that the branches have diverged, stop and resolve the
+branch history with your collaborator before pushing.
+
+6. Merge your feature changes into master and push master
+
+First, complete step 4 so your feature changes are committed and pushed.
+Then run:
+
+git checkout master
+git pull --ff-only origin master
+git merge feature/sue-1
+
+Review the merged result and run the project's relevant checks. Once ready:
+
+git push origin master
+
+This publishes the merged changes to the remote master branch.
+If Git reports merge conflicts, edit the conflicted files to resolve them,
+then run:
+
+git add .
+git commit -m "Resolve merge conflicts"
+
+Review and check the result before running git push origin master.
+To cancel an unfinished merge instead, run git merge --abort.
+
+If master is protected and direct pushes are blocked, push feature/sue-1
+and open a pull request from feature/sue-1 into master on your Git host.
+Complete the required reviews and checks, then merge the pull request there.
+
+7. Start your next task
+
+git checkout master
+git pull --ff-only origin master
+git checkout -b feature/sue-2
