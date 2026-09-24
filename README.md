@@ -29,7 +29,10 @@ Sue confirmed her own login works.
 
 Phase 4 is in progress: patient list/search, initial entry, follow-up entry,
 draft revision history, finalization, print/PDF, patient detail/editing, and
-empty/source-pending payer reference pages are implemented. The appointments
+empty/source-pending payer reference pages are implemented. The patient record
+page now shows pain-score changes between encounters and has a print-to-PDF
+action for the full note history; the rendered page and a three-note PDF were
+verified in an isolated browser. The appointments
 page currently uses fictional Square-style records; it lets you associate a
 scheduled demo appointment with a demo patient but does not connect to Square.
 An isolated browser test verified saving and reopening this association,
