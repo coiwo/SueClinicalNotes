@@ -95,6 +95,7 @@ model Patient {
   identifier           String      @unique
   payer                Payer
   primaryTreatmentArea String
+  caseDescription      String?
   caseOpenedDate       String // YYYY-MM-DD clinic calendar date, never timezone shifted
   archivedAt           DateTime?
   isDemo               Boolean     @default(false)
