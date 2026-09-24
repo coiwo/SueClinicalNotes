@@ -15,7 +15,7 @@ db.sqlite
 
 # next.js
 /.next/
-/.next-phase2-check/
+/.next-*/
 /out/
 next-env.d.ts
 

@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import LogoutButton from './logout-button';
+export function Shell({children}:{children:React.ReactNode}){return <><header className="topbar"><Link className="brand" href="/"><span className="monogram">S</span><span><strong>SUE</strong><small>CLINICAL NOTES</small></span></Link><nav className="main-nav"><Link href="/">工作台</Link><Link href="/patients">病人档案</Link><Link href="/patients/new">新增病人</Link><Link href="/appointments">预约</Link><Link href="/payers">保险参考</Link></nav><LogoutButton/></header><div className="demo-banner">本机测试版本 · 仅使用虚构资料 · 请勿输入真实病人信息</div>{children}</>}
+export function Heading({eyebrow,title,description,action}:{eyebrow:string;title:string;description?:string;action?:React.ReactNode}){return <div className="page-heading"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1>{description&&<p className="page-description">{description}</p>}</div>{action}</div>}

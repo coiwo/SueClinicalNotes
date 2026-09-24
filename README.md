@@ -25,9 +25,22 @@ Phase 3: isolated tests passed for password hashing, file permissions, setup
 validation, rejection of password replacement, incorrect passwords, five-attempt
 lockout, two-hour idle expiry, twelve-hour maximum session duration, forged
 sessions, origin checks, cookie flags, no-store responses, and logout revocation.
-The existing browser test verified login/logout in the real UI. TypeScript
-checking passed. Sue's credentials were not changed by these tests. Awaiting
-Sue's final logout/relogin check before Phase 4.
+Sue confirmed her own login works.
+
+Phase 4 is in progress: patient list/search, initial entry, follow-up entry,
+draft revision history, finalization, print/PDF, patient detail/editing, and
+empty/source-pending payer reference pages are implemented. The appointments
+page currently uses fictional Square-style records; it lets you associate a
+scheduled demo appointment with a demo patient but does not connect to Square.
+An isolated browser test verified saving and reopening this association,
+preventing links from cancelled appointments, and leaving the appointment and
+encounter counts unchanged. The patient/note workflows also passed their
+isolated browser checks. A follow-up validation issue for existing seeded
+patients was fixed; a browser check confirmed saving and reloading a follow-up
+for that ID format, including a pain-score-only entry. Its temporary patient
+was archived. Type checking and database safeguards passed. Exact
+CPT choices still await Sue's confirmation. This remains a fictional-data local
+preview; do not enter real patient information.
 
 `npm run test:access` uses an isolated temporary credential store. To run the
 HTTP regression test, start a separate development instance on port 3001 with

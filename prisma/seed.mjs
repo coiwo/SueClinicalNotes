@@ -1,7 +1,7 @@
 import { PrismaClient } from "../generated/prisma/index.js";
 const db = new PrismaClient();
 try {
-  if (await db.patient.count({where:{isDemo:false}})) throw new Error("Refusing demo seed alongside non-demo patients");
+  if (await db.patient.count({where:{isDemo:false,archivedAt:null}})) throw new Error("Refusing demo seed alongside active non-demo patients");
   const cases = [
     {payer:"Aetna", area:"Low back", pain:[7,5,4]},
     {payer:"Cigna_ASH", area:"Neck", pain:[5,5,5]},
@@ -21,5 +21,12 @@ try {
       });
     }
   }
+  const demoPatient=await db.patient.findUniqueOrThrow({where:{identifier:"DEMO-ONLY-001"}});
+  const appointments=[
+    {id:"demo-square-appointment-001",squareAppointmentId:"SQUARE-DEMO-001",scheduledAt:"2026-09-24T13:00:00-04:00",status:"scheduled"},
+    {id:"demo-square-appointment-002",squareAppointmentId:"SQUARE-DEMO-002",scheduledAt:"2026-09-25T09:30:00-04:00",status:"scheduled"},
+    {id:"demo-square-appointment-003",squareAppointmentId:"SQUARE-DEMO-003",scheduledAt:"2026-09-26T11:00:00-04:00",status:"cancelled"},
+  ];
+  for(const a of appointments) await db.appointment.upsert({where:{squareAppointmentId:a.squareAppointmentId},update:{},create:{...a,patientId:a.id.endsWith("001")?demoPatient.id:null,isDemo:true}});
   console.log(JSON.stringify({demoPatients:await db.patient.count({where:{isDemo:true}}),encounters:await db.encounter.count(),notes:await db.visit.count()}));
 } finally {await db.$disconnect();}

@@ -1,0 +1,1 @@
+'use client';export default function LogoutButton(){return <button className="logout-button" onClick={async()=>{await fetch('/api/access/logout',{method:'POST'});window.location.assign('/login');}}>退出登录</button>}
