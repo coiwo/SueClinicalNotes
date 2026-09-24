@@ -10,6 +10,15 @@ Database initialization and password setup are subsequent phases. Do not enter
 real patient data. Development currently runs with `npm run dev`; Docker
 packaging comes later.
 
+Phase 2: applied the inherited migration, seeded 4 fictional patients / 12
+encounters / 12 draft notes, and passed `npm run db:verify` in separate processes.
+Verified scores, dates, preserved revisions, finalized-note locks, addendum
+requirements, and patient archiving. No real patient data or password was added.
+The local read-only report is `storage/verification/phase-2-report.html` (ignored
+by Git). Its rendered page was visually checked. Prisma Studio's automated
+browser view stayed loading; Studio was stopped. Login and patient-workspace
+browser checks remain pending in Phase 3.
+
 Dependency review on 2026-09-23 reported seven affected packages: two critical,
 four high, and one moderate. Findings include unused NextAuth scaffold packages,
 Prisma configuration dependencies, and Next.js's nested PostCSS. The current
