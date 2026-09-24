@@ -1,221 +1,261 @@
-GIT INSTRUCTIONS
+GIT GUIDE: SueClinicalNotes
 
-Run these commands in a terminal, one line at a time.
-Replace REPOSITORY_URL with your repository's clone URL.
-These examples use master as the main branch. If your repository uses main,
-replace master with main in the commands below.
+Repository: https://github.com/coiwo/SueClinicalNotes
+Owner: coiwo
+Collaborator: Sue (Sueduthebest)
 
-======================================================================
-PREPARATION: OWNER AND COLLABORATOR ACCESS
-======================================================================
+HOW TO USE THIS GUIDE
+- First time on Sue's computer: complete Sections 1 and 2.
+- Next time: start at Section 3. Do not clone or sign in again unnecessarily.
+- When a feature is ready: follow Section 4 to merge it into master.
+- If a command fails: see Section 5 before continuing.
 
-Repository: coiwo/SueClinicalNotes
-Repository owner: coiwo (you)
-Collaborator: Sue, GitHub username Sueduthebest
-Sue's commit email: sue.du.work@gmail.com
-
-Owner's steps (your GitHub account)
-----------------------------------
-
-1. Open coiwo/SueClinicalNotes on GitHub.
-2. Go to Settings > Collaborators.
-3. Confirm Sueduthebest is listed. If you already invited her, you do not
-   need to add her again. If she is missing, click Add people and invite
-   Sueduthebest.
-4. If the invitation is pending, ask Sue to accept it while signed in to
-   GitHub as Sueduthebest.
-
-For a repository owned by a personal GitHub account, collaborators
-automatically receive read and write access after accepting the invitation.
-There is no separate Write setting to enable. Branch protection rules can
-still require a pull request before changes can be merged into master.
-
-Keep using your own GitHub account and commit details on your computer.
-You do not need to switch your account to Sue's to give her access.
-
-Sue's steps (on her own computer)
---------------------------------
-
-1. Sign in to GitHub as Sueduthebest and accept the invitation from her email.
-2. Clone the repository using Section 1, unless she already has a local copy.
-3. Follow Section 2 to set her commit details and authenticate Git as
-   Sueduthebest.
-4. Follow Sections 3 through 5 to create a feature branch and push changes.
-
-The name and email commands in Section 2 are for Sue's local repository.
-Giving Sueduthebest access does not give Lucas-makerCDD access. If a push
-error names Lucas-makerCDD, that computer is using that account's credentials;
-see Section 2D.
-
-GitHub reference:
-https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository
+Run commands one line at a time. Except for installation and cloning, run
+commands inside the existing SueClinicalNotes folder.
+These examples use master. If the repository uses main, replace master
+with main. Replace feature/sue-1 with your current branch name as needed.
 
 ======================================================================
-SECTION 1: CLONE THE REPOSITORY (FIRST TIME ONLY)
+1. ONE-TIME PREPARATION: ACCESS AND GITHUB LOGIN
 ======================================================================
 
-git clone REPOSITORY_URL SueClinicalNotes
-cd SueClinicalNotes
+A. Owner: give Sue access
 
-For future sessions, open a terminal in the existing SueClinicalNotes folder.
-You do not need to clone it again.
+On GitHub, open the repository > Settings > Collaborators > Add people.
+Invite Sueduthebest. If her invitation is already pending, do not add her
+again. Sue must sign in as Sueduthebest and accept the email invitation.
 
-======================================================================
-SECTION 2: GIT SETUP (AFTER CLONING, BEFORE MAKING COMMITS)
-======================================================================
+For this personal repository, accepting gives Sue read and write access;
+there is no separate Write setting. Making the repository private preserves
+her collaborator access. Branch rules may still require pull requests.
+The owner keeps using their own account and commit details.
 
-The following setup commands are for Sue to run on her own computer.
+B. Sue: check GitHub CLI on her computer
 
-2A. Set Sue's commit name and email
-----------------------------------
+GitHub CLI is already installed on Sue's current Intel Mac at:
+/Users/sue/.local/bin/gh
 
-Run these commands inside the SueClinicalNotes folder to set the author
-information for future commits in this repository:
+Load it in an existing Bash terminal and check it:
 
-git config user.name "Sueduthebest"
-git config user.email "sue.du.work@gmail.com"
+source ~/.bash_profile
+gh --version
 
-Check the saved settings:
+Homebrew is not needed on this Mac. For a different computer, install GitHub
+CLI using https://github.com/cli/cli#installation, then continue below.
 
-git config user.name
-git config user.email
-
-These settings apply only to this repository. They do not change existing
-commits or switch your GitHub login.
-
-2B. Sign in to GitHub as Sueduthebest
------------------------------------
-
-To sign in using GitHub CLI (gh), run:
+C. Sue: sign in to GitHub
 
 gh auth login --hostname github.com --git-protocol https --web
 
-Complete the browser login as Sueduthebest. If the browser is signed in to
-another account, switch to Sueduthebest before completing authorization.
-Then run:
+Follow the prompts. In the browser, authorize as Sueduthebest. Then run:
 
 gh auth setup-git
 gh auth status
 
-Confirm that the active GitHub account is Sueduthebest. If multiple accounts
-are already saved and another account is active, run:
+Confirm the active account is Sueduthebest. If it is not, see Section 5A.
 
-gh auth switch --hostname github.com --user Sueduthebest
-gh auth status
+======================================================================
+2. ONE-TIME REPOSITORY SETUP
+======================================================================
 
-If you see "gh: command not found", install GitHub CLI from https://cli.github.com/
-and then repeat the login steps.
+A. Clone (skip if the repository is already on this computer)
 
-2C. Get permission to push to the repository
-------------------------------------------
+From the parent folder where you want the project, run:
 
-Complete the preparation section above. Once Sue accepts the collaborator
-invitation as Sueduthebest, she has write access to this personal repository.
-The owner does not need to enable a separate Write setting.
+git clone https://github.com/coiwo/SueClinicalNotes.git
+cd SueClinicalNotes
 
-2D. Fix a permission error (403)
--------------------------------
+If already cloned, open a terminal in that existing SueClinicalNotes folder.
 
-If a push reports "Permission to coiwo/SueClinicalNotes.git denied to
-Lucas-makerCDD" with error 403, Git is using credentials for Lucas-makerCDD.
-Changing git config user.name or user.email alone will not fix this.
-Complete the GitHub login and repository access steps above, then retry
-the push once your feature branch and commits are ready:
+B. Set Sue's commit details
 
+Run inside the repository on Sue's computer:
+
+git config user.name "Sueduthebest"
+git config user.email "sue.du.work@gmail.com"
+
+Check the settings:
+
+git config user.name
+git config user.email
+
+These settings label future commits in this repository. They do not change
+existing commits or sign in to GitHub. The owner uses their own details.
+
+======================================================================
+3. EVERYDAY WORK: UPDATE, EDIT, COMMIT, PUSH
+======================================================================
+
+A. Start a NEW task
+
+Check for unfinished changes first:
+
+git status
+
+Commit unfinished work on its current branch before switching branches.
+When the working tree is clean, update master and create a new branch:
+
+git checkout master
+git pull --ff-only origin master
+git checkout -b feature/sue-1
+
+Use a new branch name for each task, such as feature/sue-2 next time.
+The -b option creates a branch; use it only once for each new branch.
+
+B. OR continue an EXISTING task
+
+With a clean working tree, switch to your existing local branch:
+
+git checkout feature/sue-1
+
+If this branch has already been pushed, get its latest remote changes:
+
+git pull --ff-only origin feature/sue-1
+
+Skip that pull if the branch has never been pushed. This updates the feature
+branch from the same remote branch; it does not merge master into it.
+
+C. Edit files, review, commit, and push
+
+Make your changes, then run from the repository root:
+
+git status
+git diff
+git add .
+git diff --cached
+
+Review the staged changes before continuing. git add . stages all changes
+under the current folder, including deletions. Then save and upload them:
+
+git commit -m "your notes"
 git push origin feature/sue-1
 
+Replace "your notes" with a short description of what changed.
+Repeat step C whenever you have more work to save and push.
+Pushing a feature branch does not change master.
+
 ======================================================================
-SECTION 3: PULL THE LATEST CHANGES FROM MASTER
+4. FINISH A TASK: MERGE INTO MASTER
 ======================================================================
 
-Before switching branches, commit your current work or stash it.
+First, commit and push your feature changes using Section 3C.
+Choose ONE of the following methods.
+
+A. Pull request on GitHub (for owner review or protected master)
+
+1. Open the repository on GitHub and create a pull request.
+2. Set the base branch to master and the compare branch to feature/sue-1.
+3. Review the changes and complete any required checks or approvals.
+4. The owner or an authorized collaborator merges the pull request.
+5. Update your local master:
 
 git checkout master
 git pull --ff-only origin master
 
-======================================================================
-SECTION 4: CREATE OR CHECK OUT A FEATURE BRANCH
-======================================================================
+B. Merge and push master from the terminal (if direct pushes are allowed)
 
-Start from the updated master branch, then run:
-
-git checkout -b feature/sue-1
-
-This creates feature/sue-1 and switches to it. Use a new name, such as
-feature/sue-2, for the next task.
-To switch to an existing local branch, omit -b:
-
-git checkout feature/sue-1
-
-======================================================================
-SECTION 5: COMMIT AND PUSH YOUR FEATURE CHANGES
-======================================================================
-
-After editing your files, review your changes:
-
-git status
-git diff
-
-Stage, review, commit, and push:
-
-git add .
-git diff --cached
-git commit -m "your notes"
-git push origin feature/sue-1
-
-Replace "your notes" with a short description of what you changed.
-Run git add . from the repository root to stage all changes, including
-deletions. Check the staged changes before committing to make sure they
-contain only the files you intend to share.
-Repeat these steps whenever you have more changes to push.
-
-======================================================================
-SECTION 6: PULL CHANGES FROM THE REMOTE FEATURE BRANCH
-======================================================================
-
-With your current work committed or stashed, run:
+On the computer with the feature branch, start with a clean working tree:
 
 git checkout feature/sue-1
 git pull --ff-only origin feature/sue-1
-
-This downloads updates that someone else pushed to the same feature branch.
-It does not bring master changes into your feature branch.
-If --ff-only reports that the branches have diverged, stop and resolve the
-branch history with your collaborator before pushing.
-
-======================================================================
-SECTION 7: MERGE INTO MASTER AND PUSH MASTER
-======================================================================
-
-First, complete Section 5 so your feature changes are committed and pushed.
-Then run:
-
 git checkout master
 git pull --ff-only origin master
 git merge feature/sue-1
 
-Review the merged result and run the project's relevant checks. Once ready:
+Review the result and run the project's relevant checks. If they pass:
 
 git push origin master
 
-This publishes the merged changes to the remote master branch.
-If Git reports merge conflicts, edit the conflicted files to resolve them,
-then run:
+If conflicts appear, use Section 5C before pushing. If master rejects direct
+pushes because of branch rules, use the pull request method above.
 
-git add .
-git commit -m "Resolve merge conflicts"
+C. Start the next task
 
-Review and check the result before running git push origin master.
-To cancel an unfinished merge instead, run git merge --abort.
-
-If master is protected and direct pushes are blocked, push feature/sue-1
-and open a pull request from feature/sue-1 into master on your Git host.
-Complete the required reviews and checks, then merge the pull request there.
-
-======================================================================
-SECTION 8: START YOUR NEXT TASK
-======================================================================
+After the previous feature has been merged into master:
 
 git checkout master
 git pull --ff-only origin master
 git checkout -b feature/sue-2
+
+Continue with Section 3C using feature/sue-2 in the push command.
+
+======================================================================
+5. TROUBLESHOOTING
+======================================================================
+
+A. Permission denied / error 403 / wrong GitHub account
+
+If the error says "denied to Lucas-makerCDD", Git is authenticating as that
+account. Giving Sueduthebest access does not give Lucas-makerCDD access.
+
+First, the owner checks Settings > Collaborators and confirms Sue accepted
+her invitation. Then, on Sue's computer:
+
+gh auth status
+
+If Sueduthebest is already saved as a login, switch to it:
+
+gh auth switch --hostname github.com --user Sueduthebest
+
+If it is not saved, sign in:
+
+gh auth login --hostname github.com --git-protocol https --web
+
+Authorize as Sueduthebest, then run:
+
+gh auth setup-git
+gh auth status
+git push origin feature/sue-1
+
+Changing git config user.name or user.email alone cannot fix authentication.
+
+B. gh: command not found
+
+On Sue's configured Bash terminal, try:
+
+source ~/.bash_profile
+gh --version
+
+If still missing, check the installed executable:
+
+/Users/sue/.local/bin/gh --version
+
+If that works, add its folder to the current terminal's PATH:
+
+export PATH="$HOME/.local/bin:$PATH"
+
+If the executable is missing, use the official installation guide:
+https://github.com/cli/cli#installation
+
+C. Merge conflicts
+
+Run git status to find conflicted files. Edit them to resolve the conflicts
+and remove conflict markers, then run:
+
+git add .
+git diff --cached
+git commit -m "Resolve merge conflicts"
+
+Review and check the result before pushing. To cancel an unfinished merge
+instead, run:
+
+git merge --abort
+
+D. Pull fails because branches have diverged, or push is rejected
+
+Run git status and read the error. Coordinate with the owner to reconcile
+local and remote changes before retrying. Do not use force push to bypass it.
+If the error is a permission error, follow Section 5A.
+
+======================================================================
+REFERENCES
+======================================================================
+
+GitHub CLI installation:
+https://github.com/cli/cli#installation
+
+GitHub CLI login:
+https://cli.github.com/manual/gh_auth_login
+
+Personal repository collaborator permissions:
+https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository
