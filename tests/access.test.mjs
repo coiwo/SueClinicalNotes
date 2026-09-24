@@ -4,7 +4,7 @@ import {mkdtemp,readFile,writeFile,stat} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {randomBytes,createHash} from 'node:crypto';
-import {configured,setPassword,login,logout,validSession,IDLE_MS} from '../src/server/access-store.ts';
+import {configured,setPassword,login,logout,validSession,IDLE_MS,MAX_MS} from '../src/server/access-store.ts';
 test('password setup, sessions, throttling and expiry are enforced',async()=>{
  process.env.SUE_AUTH_DIR=await mkdtemp(path.join(tmpdir(),'sue-access-unit-'));
  const password=randomBytes(24).toString('hex');
@@ -23,4 +23,6 @@ test('password setup, sessions, throttling and expiry are enforced',async()=>{
  const state=JSON.parse(await readFile(file,'utf8'));state.blockedUntil=Date.now()-1;await writeFile(file,JSON.stringify(state));
  const next=await login(password);const key=createHash('sha256').update(next).digest('hex');
  const stale=JSON.parse(await readFile(file,'utf8'));stale.sessions[key].seen=Date.now()-IDLE_MS-1;await writeFile(file,JSON.stringify(stale));assert.equal(await validSession(next),false);
+ const absolute=await login(password);const absoluteKey=createHash('sha256').update(absolute).digest('hex');
+ const old=JSON.parse(await readFile(file,'utf8'));old.sessions[absoluteKey].created=Date.now()-MAX_MS-1;old.sessions[absoluteKey].seen=Date.now();await writeFile(file,JSON.stringify(old));assert.equal(await validSession(absolute),false);
 });

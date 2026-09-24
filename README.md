@@ -6,8 +6,7 @@ Read ../project-plan.md for the approved plan and
 
 Phase 1: dependencies installed, TypeScript check passed, and the original
 password setup page rendered and visually inspected at http://127.0.0.1:3000/login.
-Database initialization and password setup are subsequent phases. Do not enter
-real patient data. Development currently runs with `npm run dev`; Docker
+Do not enter real patient data. Development currently runs with `npm run dev`; Docker
 packaging comes later.
 
 Phase 2: applied the inherited migration, seeded 4 fictional patients / 12
@@ -16,8 +15,29 @@ Verified scores, dates, preserved revisions, finalized-note locks, addendum
 requirements, and patient archiving. No real patient data or password was added.
 The local read-only report is `storage/verification/phase-2-report.html` (ignored
 by Git). Its rendered page was visually checked. Prisma Studio's automated
-browser view stayed loading; Studio was stopped. Login and patient-workspace
-browser checks remain pending in Phase 3.
+browser view stayed loading; Studio was stopped. Subsequently, an isolated
+browser test signed in to the actual app and verified all 12 note values,
+patient switching, search, reload, narrow-screen layout, logout, and protected
+access. Desktop and mobile screenshots were inspected. Sue then set her own
+password locally and confirmed the patient/date/search/reload checks passed.
+
+Phase 3: isolated tests passed for password hashing, file permissions, setup
+validation, rejection of password replacement, incorrect passwords, five-attempt
+lockout, two-hour idle expiry, twelve-hour maximum session duration, forged
+sessions, origin checks, cookie flags, no-store responses, and logout revocation.
+The existing browser test verified login/logout in the real UI. TypeScript
+checking passed. Sue's credentials were not changed by these tests. Awaiting
+Sue's final logout/relogin check before Phase 4.
+
+`npm run test:access` uses an isolated temporary credential store. To run the
+HTTP regression test, start a separate development instance on port 3001 with
+`SUE_AUTH_DIR` pointing to a fresh temporary directory and `SUE_TEST_DIST` set
+to `.next-phase2-check`, then run:
+
+    SUE_AUTH_TEST_URL=http://127.0.0.1:3001 node --test tests/access-http.test.mjs
+
+That HTTP test sets a test password and triggers lockout; never run it against
+the user's credential store. Stop the isolated server afterward.
 
 Dependency review on 2026-09-23 reported seven affected packages: two critical,
 four high, and one moderate. Findings include unused NextAuth scaffold packages,
