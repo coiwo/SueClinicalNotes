@@ -1,0 +1,37 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Personal skill for finding and opening SueClinicalNotes
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Installed myvirtualassistant-open-project in Sue's personal skills directory
+  so the navigation workflow can be discovered outside the repository.
+- The skill checks the known project location, verifies the actual app root,
+  and guides workspace selection when the current session lacks access.
+
+WHY
+- Help Sue resume work even when she starts outside the project folder.
+
+FILES CHANGED
+- Outside repository: /Users/sue/.agents/skills/myvirtualassistant-open-project/SKILL.md
+- Outside repository: /Users/sue/.agents/skills/myvirtualassistant-open-project/agents/openai.yaml
+- docs/Sue's changelogs/2026-09-24-personal-project-navigation.txt: this entry.
+
+VALIDATION
+- Skill Creator quick_validate.py: passed before and after installation.
+- Verified the known SueClinicalNotes folder exists with app markers.
+- git diff --check: passed.
+- Checks not run: fresh-client skill discovery and UI invocation.
+
+HOW SUE CAN CHECK
+1. Restart Codex if needed and open the skill picker outside the project.
+2. Select myvirtualassistant-open-project.
+3. Follow its instructions to open the verified SueClinicalNotes project.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- This personal installation is local to Sue's current Mac/account and is
+  not included when pushing the project repository to GitHub.

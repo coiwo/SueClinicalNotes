@@ -1,0 +1,4 @@
+interface:
+  display_name: "myvirtualassistant-changelog"
+  short_description: "Write a changelog for the current task"
+  default_prompt: "Use $myvirtualassistant-changelog to record this task in Sue's changelogs."

@@ -1,0 +1,35 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Locate the active application from the assistant instructions folder
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Added root discovery and verification steps at the top of AGENTS.md.
+- Listed active source, database, test, setup, Git, and changelog locations.
+- Distinguished the documentation folder and archived app from the active project.
+- Explained how to handle a workspace restricted to the instructions folder.
+
+WHY
+- Let the agent continue work from the instructions directory while reading
+  and editing the actual SueClinicalNotes application at the repository root.
+
+FILES CHANGED
+- docs/app-building-virtual-assistant/AGENTS.md: project-location instructions.
+- docs/Sue's changelogs/2026-09-24-main-project-location.txt: this entry.
+
+VALIDATION
+- Verified Git root discovery from the assistant instructions directory.
+- Verified the root package name and src, prisma, and tests directories.
+- git diff --check: passed.
+- Checks not run: app tests; only instructions changed.
+
+HOW SUE CAN CHECK
+1. Ask the agent to read docs/app-building-virtual-assistant/AGENTS.md.
+2. Confirm it identifies SueClinicalNotes as the root and reads root source files.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- Include this entry with the instruction change when committing.

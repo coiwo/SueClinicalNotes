@@ -1,0 +1,39 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Daily Git planning and end-of-session changelog reminders
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Added a returning-session workflow for checking progress and Git status.
+- Added start-of-session confirmation of the branch and upload plan.
+- Added a natural wrap-up question and changelog preference handling.
+- Clarified that existing authorization carries forward and that finishing
+  work or writing a log does not by itself authorize a push or master merge.
+
+WHY
+- Help Sue remember to record and share her work without repeating setup
+  or interrupting every small change with confirmation questions.
+
+FILES CHANGED
+- docs/app-building-virtual-assistant/AGENTS.md: daily and wrap-up workflow.
+- docs/app-building-virtual-assistant/先看这份说明.txt: Chinese explanation.
+- docs/Sue's changelogs/README.txt: automatic-recording preference guidance.
+- docs/Sue's changelogs/2026-09-24-daily-git-wrap-up.txt: this entry.
+
+VALIDATION
+- Reviewed the daily workflow against existing first-time and changelog rules.
+- git diff --check: passed.
+- Checks not run: app tests; only documentation changed.
+
+HOW SUE CAN CHECK
+1. Ask the agent to read AGENTS.md and continue the existing project.
+2. Confirm it checks current progress and asks about today's Git plan.
+3. At wrap-up, confirm it records changes and reports whether they were pushed.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- Include this entry with the related documentation when committing.
+- No commit, push, or scheduled reminder was created by this documentation edit.

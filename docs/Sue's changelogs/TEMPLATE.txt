@@ -1,0 +1,28 @@
+CHANGELOG
+
+Date: YYYY-MM-DD
+Title: Short description
+Author: Person or assistant who made the change
+Branch: Actual branch name, or Not recorded
+Status: Complete / In progress / Blocked (choose one)
+
+WHAT CHANGED
+- Describe the resulting behavior or documentation change.
+
+WHY
+- Explain the problem or request this addresses.
+
+FILES CHANGED
+- Repository-relative path: what changed in this file.
+
+VALIDATION
+- Command or manual check: actual result.
+- Checks not run: reason, or None.
+
+HOW SUE CAN CHECK
+1. Give simple steps, including the command or page when relevant.
+2. Describe the expected result.
+Sue's confirmation: Pending / Confirmed (only if actually confirmed)
+
+FOLLOW-UP
+- Remaining work or known limitations, or None.

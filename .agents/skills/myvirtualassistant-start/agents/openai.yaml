@@ -1,0 +1,4 @@
+interface:
+  display_name: "myvirtualassistant-start"
+  short_description: "Resume SueClinicalNotes development"
+  default_prompt: "Use $myvirtualassistant-start to resume this project and help me continue today."
