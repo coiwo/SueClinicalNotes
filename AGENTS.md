@@ -1,0 +1,24 @@
+# SueClinicalNotes project assistant
+
+## Default workflow
+
+Use the app-building virtual assistant workflow by default for work in this repository. At the start of a session, read `docs/app-building-virtual-assistant/AGENTS.md` and follow its existing-project location, returning-session, Git, validation, and changelog instructions. Do not restart first-time discovery or scaffolding for this existing app. Answer direct questions directly without forcing a full kickoff ceremony.
+
+Read the root `README.md`, `package.json`, the project plan at `docs/app-building-virtual-assistant/project-plan.md`, and relevant recent entries in `docs/Sue's changelogs/` to establish current progress. Read actual source before changing it. The active app is at this repository root; the handoff app under docs is an archive.
+
+Follow the user's language and explain steps simply. Preserve unfinished changes. Use fictional test data. Write change records using `docs/Sue's changelogs/TEMPLATE.txt`; honor explicit user preferences. Follow the guide's daily Git planning and wrap-up workflow, preserving authorization already given. Do not treat a resume or wrap-up phrase as permission to commit, push, or merge.
+
+## Short chat phrases
+
+Discoverable project skills are installed in `.agents/skills/`: `myvirtualassistant-start`, `myvirtualassistant-changelog`, and `myvirtualassistant-check-progress`. In Codex CLI/IDE, select them through `/skills` or `$`; other clients may use `@`. These skills implement the corresponding workflows below. The slash-prefixed chat aliases are still not native slash-menu registrations.
+
+These are ordinary messages to interpret after these instructions load, not registered slash commands or terminal commands:
+
+- `myvirtualassistant` or `继续开发`: resume the existing project; check progress and Git status, briefly summarize, and ask what to work on if no task was supplied. If followed by a task, work on that task using the guide.
+- `/myvirtualassitant-start` or `/myvirtualassistant-start`: the same resume workflow. Accept both spellings, and also accept `myvirtualassitant-start` or `myvirtualassistant-start` without the slash. Read the assistant guide, check the actual root code and recent changelogs, summarize the current branch and progress, then continue the supplied task or ask what Sue wants to do today. Do not restart installation or scaffold a new app.
+- `今天做完了` or `wrap up`: summarize results, create or update the changelog according to the user's preference, and handle the Git handoff under existing authorization. Ask about committing/pushing only when authorization is missing.
+- `/myvirtualassistant-changelog` or `myvirtualassistant-changelog`: read `docs/Sue's changelogs/README.txt` and `TEMPLATE.txt`, inspect the current task, Git diff/status, and relevant existing entries, then create or update the task's dated changelog in that folder. Treat this phrase as authorization to write the changelog without another confirmation. Record only supported changes and actual validation results; mark unfinished work and unrun checks honestly. Do not attribute unrelated existing changes to this task. If the intended task cannot be determined, ask one focused question. Return the entry's path. This phrase alone does not authorize committing, pushing, or merging, and does not mean Sue is finished for the day.
+- `查看进度` or `project status`: read the current project state and report completed work and next steps without changing files.
+- `/myvirtualassistant-check-progress` or `myvirtualassistant-check-progress`: perform a read-only handoff review. Locate the active repository root; read its README, package.json, project plan, and relevant changelogs; inspect Git status, the current branch, recent commits, pending diffs, and relevant current source/tests. Compare implemented code with the recorded progress rather than treating the changelog as proof. Summarize what exists, what was actually verified, unfinished work, discrepancies or uncertainty, and a proposed next step. Then explicitly ask the user to confirm or correct this understanding and approve the next step. Wait for their reply before implementation, modifying files, installing dependencies, running migrations, committing, or pushing. The confirmation checkpoint is required by this command; silence is not confirmation. Do not create a changelog merely for this read-only review. If the user corrects the summary, revise it and resolve any remaining ambiguity before proceeding. Confirmation of a next development step does not itself authorize a Git push or merge.
+
+If these slash-prefixed phrases reach the model as ordinary text, interpret them as the corresponding chat phrases; do not claim that this file registers a native slash command. Recommend the same phrase without `/` if the client rejects unknown slash commands.

@@ -1,0 +1,44 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Create three discoverable project assistant skills
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Created start, changelog, and check-progress skills with UI metadata.
+- Preserved mandatory user confirmation after the read-only progress review.
+- Documented skill selection and the distinction from slash chat aliases.
+
+WHY
+- Let Sue select reusable assistant workflows from the skill list.
+
+FILES CHANGED
+- .agents/skills/myvirtualassistant-start/SKILL.md: resume workflow.
+- .agents/skills/myvirtualassistant-start/agents/openai.yaml: UI metadata.
+- .agents/skills/myvirtualassistant-changelog/SKILL.md: changelog workflow.
+- .agents/skills/myvirtualassistant-changelog/agents/openai.yaml: UI metadata.
+- .agents/skills/myvirtualassistant-check-progress/SKILL.md: review and confirmation.
+- .agents/skills/myvirtualassistant-check-progress/agents/openai.yaml: UI metadata.
+- AGENTS.md: discoverable skill locations and invocation guidance.
+- docs/app-building-virtual-assistant/先看这份说明.txt: skill selection instructions.
+- docs/Sue's changelogs/2026-09-24-discoverable-assistant-skills.txt: this entry.
+
+VALIDATION
+- Skill Creator quick_validate.py: all three installed skills passed.
+- Reviewed workflow boundaries, required confirmation, and referenced paths.
+- git diff --check: passed.
+- Checks not run: fresh-client skill picker and live skill invocation;
+  this existing session has not reloaded its available skills. App code unchanged.
+
+HOW SUE CAN CHECK
+1. Open this repository in Codex; restart it if new skills are not listed.
+2. In CLI/IDE, use /skills or $ to select myvirtualassistant-check-progress.
+3. Confirm the assistant reviews progress and waits for your reply before changes.
+4. Use the start and changelog skills when ready to develop or record work.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- Commit and share .agents/skills along with the related documentation.
+- Verify skill suggestions in Sue's client after reloading.

@@ -1,0 +1,46 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Default project assistant and short chat phrases
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Added a root AGENTS.md that directs project work to the existing assistant guide.
+- Added simple resume, status, and wrap-up chat phrases with Chinese instructions.
+- Distinguished chat phrases from native slash commands and terminal commands.
+- Added /myvirtualassitant-start and /myvirtualassistant-start as equivalent
+  chat aliases, with no-slash fallbacks for clients that reject unknown commands.
+- Added /myvirtualassistant-changelog and its no-slash form to create or update
+  the current task's changelog without implying commit, push, or end-of-day approval.
+- Added /myvirtualassistant-check-progress and its no-slash form for a read-only
+  comparison of actual code, Git state, project plans, and changelogs. The agent
+  must confirm its progress summary and proposed next step with the user before
+  making changes.
+
+WHY
+- Let Sue continue work without pasting a long setup prompt each session.
+
+FILES CHANGED
+- AGENTS.md: default workflow and chat phrases.
+- docs/app-building-virtual-assistant/AGENTS.md: activation instructions.
+- docs/app-building-virtual-assistant/先看这份说明.txt: quick-start messages.
+- docs/Sue's changelogs/2026-09-24-default-assistant-activation.txt: this entry.
+
+VALIDATION
+- Checked official Codex documentation for repository-root AGENTS.md discovery.
+- Checked referenced local files and git diff --check: passed.
+- Checks not run: a fresh Codex session was not launched; app code did not change.
+
+HOW SUE CAN CHECK
+1. Open SueClinicalNotes in Codex and start a new session.
+2. Send myvirtualassistant or 继续开发 and confirm it resumes the existing project.
+3. Send 查看进度 for status, or 今天做完了 to wrap up.
+4. Send myvirtualassistant-check-progress and confirm the agent reports its
+   findings and waits for your confirmation before proceeding with changes.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- Include the root AGENTS.md and related documentation in the next commit.
+- Existing sessions should explicitly read the new root AGENTS.md once.

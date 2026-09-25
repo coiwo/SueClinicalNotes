@@ -1,0 +1,212 @@
+RUN SUE CLINICAL NOTES LOCALLY
+
+FOR SUE: Use Section 1 to start the app and test your changes.
+FOR THE OWNER: Initial setup is your responsibility; use Section 2.
+Sue does not need to repeat initial setup for everyday use.
+
+This is a local development preview. Use fictional data only, as required
+by the project README. It is not ready for real patient use.
+Run commands one line at a time.
+
+======================================================================
+1. FOR SUE: RUN THE PROJECT AND TEST YOUR CHANGES
+======================================================================
+
+A. Start the app
+
+Open Terminal and run these two commands:
+
+cd /Users/sue/Documents/Codex/Project/SueClinicalNotes
+npm run dev
+
+Keep this terminal open. When the server says it is ready, open:
+
+http://127.0.0.1:3000/login
+
+Use the port shown in the terminal. Sue's current run uses port 3001, so
+the address for that run is http://127.0.0.1:3001/login. The server may
+choose another port when 3000 is occupied; this is not a setup failure.
+
+Sign in with your app password, which is separate from your GitHub password.
+If your project is in a different folder, adjust the cd command above.
+
+B. Test your changes
+
+The app runs the code currently checked out in this folder, including your
+uncommitted edits. If needed, use docs/git-instructions.txt to select your
+feature branch before starting.
+
+Edit and save your code, then try the affected screens in the browser.
+The development server normally updates automatically; refresh the browser
+if needed. You can test before committing or pushing to GitHub.
+Your local edits and test records do not change the owner's copy.
+
+Before committing, open a second terminal and run:
+
+cd /Users/sue/Documents/Codex/Project/SueClinicalNotes
+npm run typecheck
+npm run test:access
+
+Also test the behavior you changed in the browser. Passing these commands
+does not replace checking the affected screens.
+
+C. Stop the app
+
+Press Control+C in the terminal running npm run dev.
+Your saved records and password remain on this computer.
+Next time, repeat only the two commands in Section 1A.
+
+You do not need to reinstall dependencies, seed the database, or create a
+new password each time. If startup fails, see Section 4.
+
+======================================================================
+2. FOR THE OWNER: INITIAL SETUP (ONE TIME PER COMPUTER)
+======================================================================
+
+The owner handles these steps for Sue. They are setup instructions, not
+Sue's everyday startup checklist.
+
+A. Prepare the computer and repository
+
+Check Node.js and npm:
+
+node --version
+npm --version
+
+Use Node.js 24. The current Mac has Node.js v24.21.0 and npm 11.19.0;
+package.json declares npm 11.19.0. If needed, install Node.js 24 from
+https://nodejs.org and reopen Terminal.
+
+Set up repository access and clone using docs/git-instructions.txt if
+needed. Then open the repository root containing package.json:
+
+cd /Users/sue/Documents/Codex/Project/SueClinicalNotes
+
+Do not use the archived app inside docs/app-building-virtual-assistant.
+The app uses SQLite; no separate database server, Docker, Homebrew, or
+GitHub CLI is required to run it.
+
+B. Configure and install
+
+cp -n .env.example .env
+npm ci
+
+The copy command preserves an existing .env. The example uses
+DATABASE_URL="file:./db.sqlite". Leave AUTH_SECRET as provided for local
+development; it is not Sue's app password.
+
+npm ci installs locked dependencies and generates the Prisma client.
+Wait for it to finish successfully before continuing. If it fails, resolve
+the error first; otherwise npm run dev may report "next: command not found".
+
+C. Prepare the database
+
+npm run db:migrate
+npm run db:seed
+
+On a fresh database, seeding adds four fictional patients, twelve encounters
+and draft notes, plus three demo appointments. The appointments do not
+connect to Square. Skip seeding if demo records are already set up.
+
+D. Verify the initial setup
+
+npm run typecheck
+npm run db:verify
+npm run test:access
+
+db:verify expects the original demo records. Run it before Sue edits them;
+changes to those records can make it fail later. test:access uses an
+isolated temporary credential store.
+
+E. Confirm the app opens
+*************************
+
+npm run dev
+************************
+
+Open http://127.0.0.1:3000/login. On a fresh installation, have Sue choose
+and confirm her own test password of 12 to 128 characters, then sign in.
+If already configured, use the existing app password.
+Confirm the demo records load, then hand over Section 1 to Sue.
+
+======================================================================
+3. AFTER DOWNLOADING CODE UPDATES
+======================================================================
+
+This is needed after pulling updates, not on every startup.
+
+1. Stop the server with Control+C.
+2. Save your Git work and pull the intended branch using git-instructions.txt.
+3. From the repository root, run:
+
+npm ci
+npm run db:migrate
+npm run typecheck
+npm run dev
+
+Open http://127.0.0.1:3000/login again.
+Do not reseed or replace local configuration during routine updates.
+Git pulls update code, not local records or app passwords.
+
+======================================================================
+4. IF SOMETHING GOES WRONG
+======================================================================
+
+If you are unsure, send the owner the terminal error. Do not repeat the
+entire initial setup or delete the database to fix a startup problem.
+
+"sh: next: command not found" or missing generated Prisma client
+
+From the repository root, run:
+
+npm ci
+
+If it succeeds, retry npm run dev. If it fails, send the npm ci error to
+the owner. Next.js does not need a global installation.
+
+"node: command not found" or "npm: command not found"
+
+Ask the owner to check the Node.js installation in Section 2A.
+
+"package.json not found" / ENOENT
+
+Make sure the terminal is in the project folder using the cd command in
+Section 1A, then retry.
+
+Missing DATABASE_URL or database tables
+
+Ask the owner to check .env and run npm run db:migrate from the repository
+root. Do not reset or delete the database.
+
+Port 3000 is already in use
+
+Use the existing app server, or stop it in its terminal with Control+C.
+To deliberately start on another port:
+
+npm run dev -- --port 3001
+
+Then open http://127.0.0.1:3001/login. Use the port shown by the server.
+
+Login fails or is locked
+
+Use the app password, not the GitHub password. After five incorrect
+attempts, login locks for 15 minutes. Wait before retrying.
+Do not delete the password store as a routine troubleshooting step.
+
+======================================================================
+5. LOCAL DATA: KEEP THESE FILES
+======================================================================
+
+With the default configuration, these files stay on this computer and are
+ignored by Git:
+
+.env                         Local environment configuration
+prisma/db.sqlite             Local database
+storage/private/access.json  Password hash and session state
+
+Keep them when restarting or updating. Each collaborator has their own
+local records and app password.
+
+Owner's testing note: the HTTP access regression test described in README.md
+requires a separate server and credential store. Do not run it against
+Sue's normal instance; it sets passwords and tests lockout.

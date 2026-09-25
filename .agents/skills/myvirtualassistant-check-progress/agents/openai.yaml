@@ -1,0 +1,4 @@
+interface:
+  display_name: "myvirtualassistant-check-progress"
+  short_description: "Review project progress, then confirm"
+  default_prompt: "Use $myvirtualassistant-check-progress to review progress and wait for my confirmation before making changes."

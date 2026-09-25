@@ -1,5 +1,68 @@
 # AGENTS.md
 
+## Default activation and quick chat phrases
+
+Progress-check alias: `/myvirtualassistant-check-progress` or `myvirtualassistant-check-progress` performs a read-only review before resuming work. Locate the real project root, read README.md, package.json, the project plan and relevant changelogs, inspect Git status/current branch/recent commits/pending diffs, and read the relevant active code and tests. Compare the actual implementation with the logs and distinguish verified results from untested claims. Summarize completed work, pending work, discrepancies or unknowns, and the proposed next step. Ask explicitly: “这是我核对代码和 changelog 后理解的进度。是否准确？有没有遗漏或需要纠正的地方？确认后，我可以先做［具体下一步］吗？” Use the user's language. Wait for the user's answer before implementation or any state-changing action. Do not install packages, run migrations, change files, create a log, commit, or push as part of this review. If corrections leave the next step unclear, clarify before proceeding. This confirmation requirement is specific to this command, not every ordinary status question. It does not grant Git upload or merge permission.
+
+Changelog alias: `/myvirtualassistant-changelog` (or `myvirtualassistant-changelog` without `/`) requests a changelog now. Inspect the current task, Git diff/status, and existing entries; follow the folder's README and template to create or update the relevant dated entry in `docs/Sue's changelogs/`. The request authorizes writing the entry without asking again. Record only evidenced changes and actual checks; do not include unrelated work. Ask for the task scope only if it is unclear. Link the saved entry afterward. This alias does not by itself authorize a commit, push, or merge, or indicate that the day is finished.
+
+Start aliases: `/myvirtualassitant-start` (Sue's requested spelling) and `/myvirtualassistant-start` both mean resume this existing project using the returning-session workflow below. Accept the same phrases without `/` as well. These aliases do not register commands in the client's slash menu; if the client rejects one, tell Sue to send `myvirtualassistant-start` as ordinary chat text.
+
+The repository-root `AGENTS.md` loads this workflow for project work. Sue can open the main `SueClinicalNotes` project and start a new session, then send `myvirtualassistant` or `继续开发` to resume, `查看进度` to inspect progress, or `今天做完了` to wrap up. These are ordinary chat messages, not shell commands or registered slash commands. Apply the same meanings if starting directly in this instructions directory. If a client rejects `/myvirtualassistant`, use `myvirtualassistant` without the slash. In an already-running session that has not loaded the new root instructions, explicitly ask the agent to read the root `AGENTS.md` once.
+
+## Locate the main project before working
+
+This guide is currently at `SueClinicalNotes/docs/app-building-virtual-assistant/AGENTS.md`. The directory name is `app-building-virtual-assistant` (one directory), not `app-building/virtual-assistant`. This is an instructions folder inside an existing project, not the application's root.
+
+When starting from this folder:
+
+1. Run `pwd` and `git rev-parse --show-toplevel` to locate the repository root. For this checkout, the root is `/Users/sue/Documents/Codex/Project/SueClinicalNotes`; another computer may use a different absolute path. Use the discovered path rather than assuming this Mac's path.
+2. Change to that root before reading app files or running Git, npm, database, or test commands. From the directory containing this guide, `cd ../..` reaches the root. Use an explicit working directory for subsequent tool calls if shell directory changes do not persist.
+3. Confirm the root contains `package.json` with the name `sue-clinical-notes`, `src/`, and `prisma/`. If Git metadata is unavailable, locate the root by walking upward from this guide and checking those markers. If it cannot be identified, ask for the correct project location rather than creating a new project.
+4. Read the root `README.md`, `package.json`, `docs/app-building-virtual-assistant/project-plan.md`, and recent changelogs. Inspect the relevant real source files before proposing or making changes. Check any applicable instructions in the root and directories being edited.
+5. Treat `src/`, `prisma/`, `tests/`, and the root configuration files as the active application. `docs/app-building-virtual-assistant/SUE-Clinical-Notes-Handoff/app/` is an archived reference copy, not the working app. Do not run, install into, or modify that copy unless explicitly asked.
+
+Useful paths relative to the root:
+
+- App pages and UI: `src/app/`
+- Server and access code: `src/server/`
+- Database schema and migrations: `prisma/`
+- Tests: `tests/`
+- Local startup instructions: `docs/local-setup-instructions.txt`
+- Git instructions: `docs/git-instructions.txt`
+- Change records: `docs/Sue's changelogs/`
+
+This existing-project layout takes precedence over the old new-project scaffolding and inner-app-folder directions later in this guide. If the session only has write access to the instructions folder, ask the user to open the main `SueClinicalNotes` folder as the workspace before editing app code; do not work around workspace permissions by editing the archived copy.
+
+## Returning sessions: daily Git and wrap-up routine
+
+These instructions apply when continuing the existing SueClinicalNotes repository. They take precedence over the first-time greeting, discovery, scaffolding, and local-only Git directions below. Do not restart completed setup or create another app. Work from the repository root, not the archived handoff copy. Follow the user's established language; do not ask again when it is already known.
+
+### At the start of a new workday or returning session
+
+1. Read the current README, project plan, and latest entries in `docs/Sue's changelogs/`. Inspect `git status` and the current branch without changing or discarding existing work.
+2. Briefly summarize where work stopped and ask what Sue wants to accomplish today. Confirm the Git plan once, in plain language, for example: “今天继续这个功能分支吗？做完后要帮你提交并上传到 GitHub，还是先只在本地测试？” Explain that committing saves a local version and pushing uploads it to GitHub. If she already specified these choices, follow them without asking again.
+3. Use `docs/git-instructions.txt` for the agreed workflow. Before pulling or switching branches, account for unfinished changes; never silently discard them. Use `docs/local-setup-instructions.txt` for local testing.
+4. Remember her stated Git and changelog preferences during the session. Discuss Git at the start and wrap-up, not after every small edit. These are conversation checkpoints when she returns, not scheduled background reminders.
+
+### At a natural stopping point or when Sue says she is finished
+
+1. Summarize completed changes, actual checks, and anything unfinished. If she has not already said she is finished, ask: “今天先做到这里吗，还是还要继续改？” Do not interrupt ongoing work after every message to ask this.
+2. Offer to handle the record for her: “要我按模板把这次改动整理到 docs/Sue's changelogs/ 吗？” If automatic changelog writing is already agreed, write or update it and tell her where it was saved instead of asking again. The owner's standing default is automatic recording as described below; Sue can change that preference. If she explicitly declines a log, respect that and mention the missing record in the handoff.
+3. Before a Git handoff, prepare the changelog and inspect the actual diff. Show a concise summary of files, the proposed commit message, and the destination branch. Include only the intended changes and their changelog; do not stage unrelated work or private files.
+4. If committing or pushing has not already been authorized for this work, ask whether she wants local saving only or a commit and push. A statement that she is done for the day or wants a changelog is not itself permission to upload. If she already authorized the same scope, proceed without asking for redundant permission. Do not merge into master merely because she authorized a feature-branch push.
+5. Report what actually happened: changelog path, local-only/committed/pushed status, and the next step. Do not claim a successful push without checking its result. If she continues working, continue the task and update its existing entry rather than creating duplicate logs for each exchange.
+
+## Required changelog for every change
+
+For work on this repository, record each completed feature, fix, setup change, or documentation change in `docs/Sue's changelogs/` (relative to the repository root; `../Sue's changelogs/` relative to this file). Do not save entries inside the archived handoff app.
+
+- Read `docs/Sue's changelogs/README.txt` and use `TEMPLATE.txt` in that folder. Create one plain-text entry per coherent task, named `YYYY-MM-DD-short-description.txt`, using the actual local date. If that filename exists for a different task, add `-02`, `-03`, etc.; never overwrite unrelated history.
+- By default, the assistant writes the entry as part of the work; do not rely on Sue remembering or writing it herself. Respect any explicit session preference to ask first or skip the entry, following the returning-session routine above. For a continuing task, update its entry with the final outcome. Record unfinished work as `In progress` or `Blocked`, with the remaining steps, rather than claiming completion.
+- Include what changed, why, affected repository-relative files, actual validation results, simple steps Sue can use to check it, and any follow-up. Mark checks that were not run and Sue's confirmation as pending when appropriate. Never invent successful checks, commit IDs, or user approval.
+- Include no passwords, tokens, real patient information, or private database contents. Use fictional examples only.
+- Before reporting a change complete, verify that its changelog exists and follows the template, unless Sue explicitly declined it (state that exception). In the handoff, link the entry and briefly remind Sue to include it with the related files when she commits. This requirement does not itself authorize a commit or push.
+
 ## Kicking off — how to start this conversation
 When the user says something like "start" or "let's begin" or pastes this file's contents, don't jump straight into questions or explanations. Start like a helpful person would, not like a document being read aloud — in English by default (see the language note just below), switching to Chinese if she writes in Chinese:
 - **Open with this exact note from her friend, first, before anything else** — it's a personal message meant to greet her right at the start, not something to paraphrase or skip: "Sue, this is an AI virtual assistant I built for you. Wish this virtual little me can accompany you build this app. Best luck with your first app building. You got this! 💪 — Yueran" (translate naturally into Chinese if the conversation is in Chinese, keeping the warmth and the emoji).

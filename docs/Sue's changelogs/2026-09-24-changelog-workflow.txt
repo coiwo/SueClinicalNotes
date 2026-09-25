@@ -1,0 +1,42 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Require consistent changelogs and clarify the local app address
+Author: Codex assistant, at the repository owner's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- Added a required changelog step to the app-building assistant instructions.
+- Added a reusable plain-text template and instructions in Sue's changelog folder.
+- Added a reminder to Sue's introductory guide to include the changelog when committing.
+- Clarified that the local app address follows the terminal's port, including
+  http://127.0.0.1:3001/login for Sue's reported current run.
+
+WHY
+- Keep a consistent record of changes without relying on Sue to remember.
+- Help Sue open the correct local address when the server uses port 3001.
+
+FILES CHANGED
+- docs/app-building-virtual-assistant/AGENTS.md: required changelog workflow.
+- docs/app-building-virtual-assistant/先看这份说明.txt: reminder for Sue.
+- docs/Sue's changelogs/README.txt: naming and completion instructions.
+- docs/Sue's changelogs/TEMPLATE.txt: standard entry format.
+- docs/local-setup-instructions.txt: port guidance for everyday startup.
+- docs/Sue's changelogs/2026-09-24-changelog-workflow.txt: this entry.
+
+VALIDATION
+- Confirmed the changelog folder existed and was empty before adding the format.
+- Checked the template, repository-relative paths, and instructions for consistency.
+- git diff --check: passed.
+- Checks not run: app tests and browser checks; only documentation changed.
+
+HOW SUE CAN CHECK
+1. Open docs/Sue's changelogs/TEMPLATE.txt to see the required entry format.
+2. On the next change, confirm the assistant creates a dated entry in this folder.
+3. Open the login address matching the running server's terminal output.
+Sue's confirmation: Pending
+
+FOLLOW-UP
+- Include the changelog with these documentation changes when committing.
+- Future startup ports may differ; use the terminal's displayed port.
