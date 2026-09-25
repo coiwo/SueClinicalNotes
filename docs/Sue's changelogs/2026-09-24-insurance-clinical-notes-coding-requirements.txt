@@ -1,0 +1,39 @@
+CHANGELOG
+
+Date: 2026-09-24
+Title: Insurance Clinical Notes & Coding 需求盘点与步骤追踪
+Author: Codex assistant, at Sue's request
+Branch: feature/sue-1
+Status: Complete
+
+WHAT CHANGED
+- 新增需求草案：现有流程、实际代码/资料/样例盘点、四部分需求及候选政策来源。
+- 新增步骤追踪表和计划验收用例；Sue 已确认整体方向；调整为通用临床优先，App 实现未开始。
+- 区分来源原文核读与具体 plan 适用性；所有保险候选规则未启用。
+
+WHY
+- 补充临床记录、保险来源、CPT 和 ICD-10-CM 的需求与验证路径，避免把未核实内容写进 App。
+
+FILES CHANGED
+- docs/features/insurance-clinical-notes-coding/requirements.md: 需求、盘点、来源与待确认项。
+- docs/features/insurance-clinical-notes-coding/tracker.md: 分步状态、依赖和验收计划。
+- docs/Sue's changelogs/2026-09-24-insurance-clinical-notes-coding-requirements.txt: 本记录。
+
+VALIDATION
+- 阅读根说明、助手指南、计划、近期日志及相关实际代码；起始工作区干净。
+- 官方来源相关段落核读：Aetna、Cigna、UHC；ASH 文件身份及 CDC 版本日期已检查。
+- BCBS 候选正文获取失败，标为未核实；未发现随项目提供的原始病例样例或保险附件。
+- 文档链接、需求/步骤映射、模板格式和变更范围检查完成；git diff --check 通过。
+- Checks not run: App 类型、数据库、认证和浏览器测试；本轮仅文档修改。
+
+HOW SUE CAN CHECK
+1. 打开 requirements.md，检查四部分范围和“待 Sue 核实”的候选规则。
+2. 打开 tracker.md，检查分步顺序和验收用例。
+3. 查看临床优先阶段顺序；每阶段 App 画面与病历仍需 Sue 验收。
+Sue's confirmation: Confirmed — 2026-09-24 整体需求方向及临床优先顺序
+
+FOLLOW-UP
+- F03 已确认，先提交/push 三文件需求基线，再开始 G01；整个 feature 尚未完成。
+- BCBS 公司/plan、来源资料与样例位置、语音/翻译方案和正式代码目录来源仍待确认。
+- Sue 已授权基线 commit/push 到 feature/sue-1，后续每个独立阶段 commit；PR 待功能准备好，不自动 merge。
+- 提交前逐文检查：仅需求、公开政策链接与虚构案例，没有真实患者身份、完整病历、数据库或凭据。
